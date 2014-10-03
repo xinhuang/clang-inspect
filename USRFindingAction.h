@@ -14,6 +14,7 @@ public:
 
   std::unique_ptr<clang::ASTConsumer> newASTConsumer();
   const std::string& getUSRSpelling() const { return spellingName; }
+  const std::string& getUSRType() const { return typeInfo; }
 
 private:
   std::tuple<int, int> symbolOffset;

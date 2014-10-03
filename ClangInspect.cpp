@@ -52,15 +52,13 @@ int main(int argc, const char **argv) {
   }
 
   auto files = option.getSourcePathList();
-  errs() << "RefactoringTool::ctor\n";
   tooling::RefactoringTool tool(option.getCompilations(), files);
 
-  errs() << "inspect::USRFindingAction::ctor\n";
   inspect::USRFindingAction usrAction(SymbolOffset);
-  errs() << "tool.run(usrAction)\n";
   tool.run(tooling::newFrontendActionFactory(&usrAction).get());
 
-  errs() << "Found name: " << usrAction.getUSRSpelling() << "\n";
+  errs() << "Name: " << usrAction.getUSRSpelling() << "\n";
+  errs() << "Type: " << usrAction.getUSRType() << "\n";
 
   return 0;
 }

@@ -14,7 +14,20 @@ public:
                              const clang::SourceLocation &point)
       : sourceMgr(sourceMgr), point(point), result(nullptr) {}
 
+  bool VisitNamedDecl(const clang::NamedDecl* decl) {
+    return setResult(decl, decl->getLocation(), decl->getNameAsString().length());
+  }
+
   const clang::NamedDecl *getNamedDecl() const { return result; }
+
+private:
+  bool setResult(const clang::NamedDecl *decl, clang::SourceLocation begin,
+                 unsigned int offset) {
+    if (offset == 0 || !isPointWithin(begin, begin.getLocWithOffset(offset)))
+      return true;
+    result = decl;
+    return false;
+  }
 
   bool isPointWithin(const clang::SourceLocation& begin, const clang::SourceLocation& end) const {
     return begin == point || end == point ||

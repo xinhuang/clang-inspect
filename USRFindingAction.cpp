@@ -22,8 +22,6 @@ clang::SourceLocation gotoLineAndColumn(const clang::SourceManager &sourceMgr,
 
   clang::FullSourceLoc fullLoc(point, sourceMgr);
   do {
-    llvm::errs() << "goto " << fullLoc.getSpellingLineNumber() << ":"
-           << fullLoc.getSpellingColumnNumber() << "\n";
     if (fullLoc.getSpellingLineNumber() == line)
       break;
     // FIXME: the step can be improved
@@ -46,7 +44,6 @@ public:
       : offset(offset), spellingName(spellingName), typeInfo(typeInfo) {}
 
   void HandleTranslationUnit(clang::ASTContext &context) final {
-    llvm::errs() << "HandleTranslationUnit>\n";
     const auto& sourceMgr = context.getSourceManager();
     const auto& point = gotoLineAndColumn(sourceMgr, offset);
     if (!point.isValid()) {
@@ -64,6 +61,10 @@ public:
 
     *spellingName = foundDecl->getNameAsString();
 
+    if (const auto& valueDecl = llvm::dyn_cast<clang::ValueDecl>(foundDecl)) {
+      const auto& type = valueDecl->getType();
+      *typeInfo = type.getAsString();
+    }
     // get definition location: file:<line>:<column>
     
     // get type info
