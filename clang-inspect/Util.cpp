@@ -7,10 +7,10 @@ namespace inspect {
 
 std::vector<std::string> split(const std::string& s, char deli) {
   std::vector<std::string> result;
+  auto pivot = std::begin(s);
   auto prev = std::begin(s);
-  auto pivot = prev;
   while (pivot != std::end(s)) {
-    pivot = std::find(pivot, std::end(s), deli);
+    pivot = std::find(prev, std::end(s), deli);
     if (pivot == std::end(s))
       break;
     result.emplace_back(prev, pivot);

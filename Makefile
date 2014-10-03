@@ -11,8 +11,8 @@ CLANG_LEVEL := ../..
 
 include $(CLANG_LEVEL)/../../Makefile.config
 
-PARALLEL_DIRS := clang-inspect example
-DIRS := 
+PARALLEL_DIRS := example
+DIRS := clang-inspect unittests
 
 include $(CLANG_LEVEL)/Makefile
 

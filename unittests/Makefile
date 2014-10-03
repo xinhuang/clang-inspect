@@ -1,7 +1,7 @@
 CLANG_LEVEL := ../../..
-LIBRARYNAME := clangInspect
 include $(CLANG_LEVEL)/../../Makefile.config
 
-DIRS = tool
+PARALLEL_DIRS := clang-inspect
 
 include $(CLANG_LEVEL)/Makefile
+
