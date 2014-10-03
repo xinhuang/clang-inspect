@@ -6,7 +6,3 @@ To get identifier information at specific position.
 
 clang-inspect <source files> -offset=<line>:<column> [-help]
 
-## License
-
-WTFPL
-
