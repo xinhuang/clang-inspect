@@ -19,6 +19,11 @@ public:
                      decl->getNameAsString().length());
   }
 
+  bool VisitDeclRefExpr(const clang::DeclRefExpr *expr) {
+    const auto* decl = expr->getFoundDecl();
+    return setResult(decl, expr->getLocation(), decl->getNameAsString().length());
+  }
+
   const clang::NamedDecl *getNamedDecl() const { return result; }
 
 private:

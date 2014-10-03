@@ -81,8 +81,7 @@ public:
       const auto& type = valueDecl->getType();
       *typeInfo = type.getAsString();
     }
-    // get definition location: file:<line>:<column>
-    *definitionLocation = getDefinitionLocation(sourceMgr, point);
+    *definitionLocation = getDefinitionLocation(sourceMgr, foundDecl->getLocation());
   }
 
 private:

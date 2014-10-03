@@ -33,30 +33,19 @@ void testInspection(const char *code, const std::string &loc,
 }
 
 TEST(USRFindingTest, FindFunctionDecl) {
-  auto location = "2:5";
-  auto expectName = "foo";
-  auto expectType = "int (char)";
-  auto expectLocation = "2:5";
-
-  testInspection(CODE, location, expectName, expectType, expectLocation);
+  testInspection(CODE, "2:5", "foo", "int (char)", "2:5");
 }
 
 TEST(USRFindingTest, FindParamDecl) {
-  auto location = "2:14";
-  auto expectName = "c";
-  auto expectType = "char";
-  auto expectLocation = "2:14";
-
-  testInspection(CODE, location, expectName, expectType, expectLocation);
+  testInspection(CODE, "2:14", "c", "char", "2:14");
 }
 
 TEST(USRFindingTest, FindVarDecl) {
-  auto location = "3:7";
-  auto expectName = "a";
-  auto expectType = "int";
-  auto expectLocation = "3:7";
+  testInspection(CODE, "3:7", "a", "int", "3:7");
+}
 
-  testInspection(CODE, location, expectName, expectType, expectLocation);
+TEST(USRFindingTest, FindVarExpr) {
+  testInspection(CODE, "4:10", "a", "int", "3:7");
 }
 
 }
