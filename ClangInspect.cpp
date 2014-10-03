@@ -9,14 +9,9 @@
 #include "clang/Frontend/CommandLineSourceLoc.h"
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Frontend/FrontendAction.h"
-#include "clang/Lex/Lexer.h"
-#include "clang/Parse/Parser.h"
-#include "clang/Parse/ParseAST.h"
-#include "clang/Rewrite/Core/Rewriter.h"
 #include "clang/Tooling/CommonOptionsParser.h"
 #include "clang/Tooling/Refactoring.h"
 #include "clang/Tooling/Tooling.h"
-#include "llvm/ADT/IntrusiveRefCntPtr.h"
 #include "llvm/Support/Host.h"
 #include "llvm/Support/raw_ostream.h"
 #include <string>
@@ -59,6 +54,7 @@ int main(int argc, const char **argv) {
 
   errs() << "Name: " << usrAction.getUSRSpelling() << "\n";
   errs() << "Type: " << usrAction.getUSRType() << "\n";
+  errs() << "Location: " << usrAction.getDefinitionLocation() << "\n";
 
   return 0;
 }

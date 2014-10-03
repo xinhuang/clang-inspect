@@ -33,15 +33,31 @@ clang::SourceLocation gotoLineAndColumn(const clang::SourceManager &sourceMgr,
   return point.getLocWithOffset(column - fullLoc.getSpellingColumnNumber());
 }
 
+std::string getDefinitionLocation(const clang::SourceManager &sourceMgr,
+                                  clang::SourceLocation point) {
+  clang::FullSourceLoc fullLoc(point, sourceMgr);
+
+  std::ostringstream oss;
+
+  oss << sourceMgr.getFilename(point).str() << ":"
+      << fullLoc.getSpellingLineNumber() << ":"
+      << fullLoc.getSpellingColumnNumber();
+
+  return oss.str();
+}
+
 class NamedDeclFindingConsumer : public clang::ASTConsumer {
   const std::tuple<int, int> offset;
   std::string* spellingName = nullptr;
   std::string* typeInfo = nullptr;
+  std::string *definitionLocation = nullptr;
 
 public:
   NamedDeclFindingConsumer(const std::tuple<int, int> &offset,
-                           std::string *spellingName, std::string *typeInfo)
-      : offset(offset), spellingName(spellingName), typeInfo(typeInfo) {}
+                           std::string *spellingName, std::string *typeInfo,
+                           std::string *definitionLocation)
+      : offset(offset), spellingName(spellingName), typeInfo(typeInfo),
+        definitionLocation(definitionLocation) {}
 
   void HandleTranslationUnit(clang::ASTContext &context) final {
     const auto& sourceMgr = context.getSourceManager();
@@ -66,8 +82,7 @@ public:
       *typeInfo = type.getAsString();
     }
     // get definition location: file:<line>:<column>
-    
-    // get type info
+    *definitionLocation = getDefinitionLocation(sourceMgr, point);
   }
 
 private:
@@ -90,8 +105,9 @@ USRFindingAction::USRFindingAction(const std::string &offsetString) {
 }
 
 std::unique_ptr<clang::ASTConsumer> USRFindingAction::newASTConsumer() {
-  auto consumer = std::unique_ptr<clang::ASTConsumer>(
-      new NamedDeclFindingConsumer(symbolOffset, &spellingName, &typeInfo));
+  auto consumer =
+      std::unique_ptr<clang::ASTConsumer>(new NamedDeclFindingConsumer(
+          symbolOffset, &spellingName, &typeInfo, &definitionLocation));
   return consumer;
 }
 
