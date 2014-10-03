@@ -10,4 +10,3 @@ USEDLIBS = clangInspect.a clangFrontend.a clangSerialization.a clangDriver.a \
            
 include $(CLANG_LEVEL)/Makefile
 
-CPP.Flags += -I$(PROJ_SRC_DIR)/..

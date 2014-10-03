@@ -1,4 +1,4 @@
-#include "USRFindingAction.h"
+#include "../USRFindingAction.h"
 
 #include "clang/AST/ASTConsumer.h"
 #include "clang/AST/ASTContext.h"
@@ -13,7 +13,7 @@
 
 using namespace llvm;
 
-#include "Util.h"
+#include "../Util.h"
 
 cl::OptionCategory ClangInspectCategory("Clang-inspect options");
 
