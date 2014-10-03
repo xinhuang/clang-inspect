@@ -1,4 +1,3 @@
-add_subdirectory(example)
 add_subdirectory(clang-inspect)
 
 if(CLANG_ENABLE_STATIC_ANALYZER)
