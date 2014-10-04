@@ -81,7 +81,10 @@ public:
       const auto& type = valueDecl->getType();
       *typeInfo = type.getAsString();
     } else if (const auto& typeDecl = llvm::dyn_cast<clang::TypeDecl>(foundDecl)) {
-        *typeInfo = typeDecl->getQualifiedNameAsString();
+      *typeInfo = typeDecl->getQualifiedNameAsString();
+    } else if (const auto &namespaceDecl =
+                   llvm::dyn_cast<clang::NamespaceDecl>(foundDecl)) {
+      *typeInfo = namespaceDecl->getQualifiedNameAsString();  
     }
     *definitionLocation = getDefinitionLocation(sourceMgr, foundDecl->getLocation());
   }

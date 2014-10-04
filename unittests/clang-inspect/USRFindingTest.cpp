@@ -19,6 +19,10 @@ public:\n\
   int x;\n\
 };\n\
 }\n\
+void bar() {\n\
+  foobar::Bar b;\n\
+  b.x = 0;\n\
+}\n\
 ";
 
 void testInspection(const char *code, const std::string &loc,
@@ -62,6 +66,15 @@ TEST(USRFindingTest, FindClassMemberDecl) {
   testInspection(CODE, "9:7", "foobar::Bar::x", "int", "9:7");
 }
 
+TEST(USRFindingTest, FindClassMemberExpr) {
+  testInspection(CODE, "14:5", "foobar::Bar::x", "int", "9:7");
+}
+
+/* FIXME: namspace inspection
+TEST(USRFindingTest, FindNamespaceDecl) {
+  testInspection(CODE, "9:13", "foobar", "namespace", "9:11");
+}
+*/
 
 }
 }

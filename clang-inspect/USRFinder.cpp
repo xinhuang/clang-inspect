@@ -20,8 +20,15 @@ public:
   }
 
   bool VisitDeclRefExpr(const clang::DeclRefExpr *expr) {
+    // TODO: check namespace
     const auto* decl = expr->getFoundDecl();
     return setResult(decl, expr->getLocation(), decl->getNameAsString().length());
+  }
+
+  bool VisitMemberExpr(const clang::MemberExpr* expr) {
+    const auto *decl = expr->getFoundDecl().getDecl();
+    return setResult(decl, expr->getMemberLoc(),
+                     decl->getNameAsString().length());
   }
 
   const clang::NamedDecl *getNamedDecl() const { return result; }
@@ -68,3 +75,4 @@ const clang::NamedDecl *getNamedDeclAt(clang::ASTContext &context,
   return nullptr;
 }
 }
+
