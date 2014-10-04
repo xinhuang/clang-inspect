@@ -75,7 +75,7 @@ public:
                    << " (offset " << to_string(offset) << ").\n";
     }
 
-    *spellingName = foundDecl->getNameAsString();
+    *spellingName = foundDecl->getQualifiedNameAsString();
 
     if (const auto& valueDecl = llvm::dyn_cast<clang::ValueDecl>(foundDecl)) {
       const auto& type = valueDecl->getType();

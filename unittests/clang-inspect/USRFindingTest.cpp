@@ -55,8 +55,13 @@ TEST(USRFindingTest, FindVarExpr) {
 }
 
 TEST(USRFindingTest, FindClassDecl) {
-  testInspection(CODE, "7:8", "Bar", "foobar::Bar", "7:7");
+  testInspection(CODE, "7:8", "foobar::Bar", "foobar::Bar", "7:7");
 }
+
+TEST(USRFindingTest, FindClassMemberDecl) {
+  testInspection(CODE, "9:7", "foobar::Bar::x", "int", "9:7");
+}
+
 
 }
 }
