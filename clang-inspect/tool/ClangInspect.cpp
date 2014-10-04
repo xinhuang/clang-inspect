@@ -47,9 +47,9 @@ int main(int argc, const char **argv) {
   inspect::USRFindingAction usrAction(SymbolOffset);
   tool.run(tooling::newFrontendActionFactory(&usrAction).get());
 
-  errs() << "Name: " << usrAction.getUSRSpelling() << "\n";
-  errs() << "Type: " << usrAction.getUSRType() << "\n";
-  errs() << "Location: " << usrAction.getDefinitionLocation() << "\n";
+  errs() << usrAction.getUSRSpelling() << "\n";
+  errs() << usrAction.getUSRType() << "\n";
+  errs() << usrAction.getDefinitionLocation() << "\n";
 
   return 0;
 }
