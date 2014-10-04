@@ -73,6 +73,7 @@ public:
                    << fullLoc.getSpellingLineNumber() << ":"
                    << fullLoc.getSpellingColumnNumber() << ":"
                    << " (offset " << to_string(offset) << ").\n";
+      return;
     }
 
     *spellingName = foundDecl->getQualifiedNameAsString();
@@ -82,9 +83,8 @@ public:
       *typeInfo = type.getAsString();
     } else if (const auto& typeDecl = llvm::dyn_cast<clang::TypeDecl>(foundDecl)) {
       *typeInfo = typeDecl->getQualifiedNameAsString();
-    } else if (const auto &namespaceDecl =
-                   llvm::dyn_cast<clang::NamespaceDecl>(foundDecl)) {
-      *typeInfo = namespaceDecl->getQualifiedNameAsString();  
+    } else if (llvm::isa<clang::NamespaceDecl>(foundDecl)) {
+      *typeInfo = "namespace";
     }
     *definitionLocation = getDefinitionLocation(sourceMgr, foundDecl->getLocation());
   }

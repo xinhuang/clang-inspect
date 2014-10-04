@@ -20,7 +20,9 @@ public:
   }
 
   bool VisitDeclRefExpr(const clang::DeclRefExpr *expr) {
-    // TODO: check namespace
+    if (!checkNestedNameSpecifierLoc(expr->getQualifierLoc()))
+      return false;
+
     const auto* decl = expr->getFoundDecl();
     return setResult(decl, expr->getLocation(), decl->getNameAsString().length());
   }
@@ -34,6 +36,18 @@ public:
   const clang::NamedDecl *getNamedDecl() const { return result; }
 
 private:
+  bool checkNestedNameSpecifierLoc(clang::NestedNameSpecifierLoc nameLoc) {
+    while (nameLoc) {
+      const auto *decl = nameLoc.getNestedNameSpecifier()->getAsNamespace();
+      if (decl &&
+          !setResult(decl, nameLoc.getLocalBeginLoc(),
+                     decl->getNameAsString().length()))
+        return false;
+      nameLoc = nameLoc.getPrefix();
+    }
+    return true;
+  }
+
   bool setResult(const clang::NamedDecl *decl, clang::SourceLocation begin,
                  unsigned int offset) {
     if (offset == 0 || !isPointWithin(begin, begin.getLocWithOffset(offset)))

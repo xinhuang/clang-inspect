@@ -18,10 +18,11 @@ class Bar {\n\
 public:\n\
   int x;\n\
 };\n\
+int x = 0;\n\
 }\n\
 void bar() {\n\
   foobar::Bar b;\n\
-  b.x = 0;\n\
+  b.x = foobar::x;\n\
 }\n\
 ";
 
@@ -67,14 +68,16 @@ TEST(USRFindingTest, FindClassMemberDecl) {
 }
 
 TEST(USRFindingTest, FindClassMemberExpr) {
-  testInspection(CODE, "14:5", "foobar::Bar::x", "int", "9:7");
+  testInspection(CODE, "15:5", "foobar::Bar::x", "int", "9:7");
 }
 
-/* FIXME: namspace inspection
-TEST(USRFindingTest, FindNamespaceDecl) {
-  testInspection(CODE, "9:13", "foobar", "namespace", "9:11");
+TEST(USRFindingTest, FindNamespaceVarExpr) {
+  testInspection(CODE, "15:13", "foobar", "namespace", "6:11");
 }
-*/
+
+TEST(USRFindingTest, FindNamespaceDecl) {
+  testInspection(CODE, "6:13", "foobar", "namespace", "6:11");
+}
 
 }
 }
