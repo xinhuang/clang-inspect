@@ -9,12 +9,15 @@
 #include "clang/Tooling/Tooling.h"
 #include "llvm/Support/Host.h"
 #include "llvm/Support/raw_ostream.h"
+#include "clang/Tooling/CommonOptionsParser.h"
 #include <string>
 
 using namespace llvm;
 
 #include "../Util.h"
 
+static cl::extrahelp CommonHelp(
+    clang::tooling::CommonOptionsParser::HelpMessage);
 cl::OptionCategory ClangInspectCategory("Clang-inspect options");
 
 static cl::opt<std::string> SymbolOffset(

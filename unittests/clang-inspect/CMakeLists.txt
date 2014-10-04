@@ -10,10 +10,12 @@ include_directories(
 
 add_extra_unittest(ClangInspectTests
   UtilTest.cpp
+  USRFindingTest.cpp
   ${CLANG_INSPECT_SOURCE_DIR}/Util.cpp
   )
 
 target_link_libraries(ClangInspectTests
+  clangInspect
   clangAST
   clangBasic
   clangFrontend
