@@ -80,6 +80,8 @@ public:
     if (const auto& valueDecl = llvm::dyn_cast<clang::ValueDecl>(foundDecl)) {
       const auto& type = valueDecl->getType();
       *typeInfo = type.getAsString();
+    } else if (const auto& typeDecl = llvm::dyn_cast<clang::TypeDecl>(foundDecl)) {
+        *typeInfo = typeDecl->getQualifiedNameAsString();
     }
     *definitionLocation = getDefinitionLocation(sourceMgr, foundDecl->getLocation());
   }

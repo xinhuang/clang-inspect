@@ -13,6 +13,12 @@ int foo(char c) {\n\
   int a = 33;\n\
   return a + c + 1;\n\
 }\n\
+namespace foobar {\n\
+class Bar {\n\
+public:\n\
+  int x;\n\
+};\n\
+}\n\
 ";
 
 void testInspection(const char *code, const std::string &loc,
@@ -46,6 +52,10 @@ TEST(USRFindingTest, FindVarDecl) {
 
 TEST(USRFindingTest, FindVarExpr) {
   testInspection(CODE, "4:10", "a", "int", "3:7");
+}
+
+TEST(USRFindingTest, FindClassDecl) {
+  testInspection(CODE, "7:8", "Bar", "foobar::Bar", "7:7");
 }
 
 }
