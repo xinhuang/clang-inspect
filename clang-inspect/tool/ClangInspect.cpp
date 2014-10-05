@@ -18,7 +18,7 @@ using namespace llvm;
 
 static cl::extrahelp CommonHelp(
     clang::tooling::CommonOptionsParser::HelpMessage);
-cl::OptionCategory ClangInspectCategory("Clang-inspect options");
+cl::OptionCategory ClangInspectCategory("clang-inspect options");
 
 static cl::opt<std::string> SymbolOffset(
     "offset",
