@@ -1,5 +1,7 @@
 add_clang_executable(clang-begin
-  ClangBegin.cpp)
+  ClangBegin.cpp
+  UseBeginAction.cpp
+  UseBeginMatcher.cpp)
 target_link_libraries(clang-begin
   clangASTMatchers
   clangBasic
