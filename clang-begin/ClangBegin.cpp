@@ -22,14 +22,21 @@ static cl::extrahelp MoreHelp(
     "\n`end' defined.");
 
 StatementMatcher LoopMatcher =
-    memberCallExpr(callee(methodDecl(anyOf(hasName("begin"), hasName("end")))))
-        .bind("beginOrEndCall");
+    memberCallExpr(
+        hasDeclaration(methodDecl(ofClass(
+            recordDecl(allOf(hasMethod(hasName("begin")),
+                             hasMethod(hasName("end")))).bind("class")))),
+        callee(methodDecl(anyOf(hasName("begin"), hasName("end")))))
+        .bind("callExpr");
 
 class MemberCallPrinter : public MatchFinder::MatchCallback {
 public:
   virtual void run(const MatchFinder::MatchResult& result) {
-    const auto* memberCall = result.Nodes.getNodeAs<CXXMemberCallExpr>("beginOrEndCall");
-    outs() << memberCall->getMethodDecl()->getNameAsString() << "\n";
+    const auto* recordDecl = result.Nodes.getNodeAs<RecordDecl>("class");
+    const auto* memberCall = result.Nodes.getNodeAs<CXXMemberCallExpr>("callExpr");
+    outs() << "Found potential non-member begin/end transformation: "
+           << recordDecl->getQualifiedNameAsString() << "::"
+           << memberCall->getMethodDecl()->getNameAsString() << "\n";
   }
 };
 
@@ -43,4 +50,3 @@ int main(int argc, const char **argv) {
   finder.addMatcher(LoopMatcher, &printer);
   return Tool.run(newFrontendActionFactory(&finder).get());
 }
-
