@@ -17,16 +17,19 @@ void UseBeginAction::run(const MatchFinder::MatchResult &result) {
   // FIXME: use the original class name, qualified name might has namespace
   const auto& className = recordDecl->getQualifiedNameAsString();
   const auto& methodName = memberCall->getMethodDecl()->getNameAsString();
-  outs() << "Found potential non-member begin/end transformation: " << className
-         << "::" << methodName << "\n";
   const auto& sourceMgr = *result.SourceManager;
   const auto startLoc = sourceMgr.getSpellingLoc(memberCall->getLocStart());
   const auto endLoc = sourceMgr.getSpellingLoc(memberCall->getLocEnd());
 
-  std::string replacememnt("std::" + methodName + "(" + className + ")");
-  auto length = sourceMgr.getFileOffset(endLoc) - sourceMgr.getFileOffset(startLoc);
-  tooling::Replacement repl(sourceMgr, startLoc, length, replacememnt);
+  if (printLocations) {
+    outs() << sourceMgr.getFilename(startLoc) << ":"
+           << sourceMgr.getSpellingLineNumber(startLoc) << ":"
+           << sourceMgr.getSpellingColumnNumber(startLoc) << "\n";
+  }
 
-  // TODO: apply replacement to rewriter.
+  // FIXME: add #include <iterator>
+  std::string replacememnt("std::" + methodName + "(" + className);
+  auto length = sourceMgr.getFileOffset(endLoc) - sourceMgr.getFileOffset(startLoc);
+  replaces.insert(tooling::Replacement(sourceMgr, startLoc, length, replacememnt));
 }
 }
