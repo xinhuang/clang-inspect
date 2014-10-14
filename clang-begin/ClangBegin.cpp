@@ -1,5 +1,4 @@
-#include "UseBeginMatcher.h"
-#include "UseBeginAction.h"
+#include "UseBeginActionFactory.h"
 
 using namespace begin;
 
@@ -10,6 +9,7 @@ using namespace begin;
 #include "llvm/Support/Signals.h"
 #include "clang/Frontend/TextDiagnosticPrinter.h"
 #include "clang/Rewrite/Core/Rewriter.h"
+#include "clang/Frontend/FrontendPluginRegistry.h"
 
 using namespace llvm;
 using namespace clang;
@@ -37,14 +37,12 @@ int main(int argc, const char **argv) {
   CommonOptionsParser options(argc, argv, ClangBeginCategory);
   RefactoringTool tool(options.getCompilations(), options.getSourcePathList());
 
-  UseBeginAction ubAction(tool.getReplacements(), PrintLocations);
-  MatchFinder finder;
-  finder.addMatcher(createMemberBeginEndMatcher(), &ubAction);
+  UseBeginActionFactory ubFactory(tool.getReplacements(), PrintLocations);
 
   if (Inplace){
-    return tool.runAndSave(newFrontendActionFactory(&finder).get());
+    return tool.runAndSave(&ubFactory);
   } else {
-    auto result = tool.run(newFrontendActionFactory(&finder).get());
+    auto result = tool.run(&ubFactory);
     
     LangOptions defaultLangOptions;
     IntrusiveRefCntPtr<DiagnosticOptions> diagOpts = new DiagnosticOptions();
