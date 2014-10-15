@@ -13,18 +13,6 @@
 
 namespace begin {
 
-class IncludeFinder : public clang::PPCallbacks {
-  const std::string TargetSuffix = "/iterator";
-  clang::SourceManager& sourceMgr;
-
-public:
-  IncludeFinder(clang::SourceManager &sourceMgr) : sourceMgr(sourceMgr) {}
-
-  void FileChanged(clang::SourceLocation loc, FileChangeReason reason,
-                   clang::SrcMgr::CharacteristicKind fileType,
-                   clang::FileID prevFid) override;
-};
-
 class UseBeginAction : public clang::PluginASTAction {
   clang::ast_matchers::MatchFinder finder;
   BeginMatchCallback matchCallback;
