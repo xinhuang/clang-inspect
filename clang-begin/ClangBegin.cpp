@@ -21,7 +21,7 @@ static llvm::cl::OptionCategory ClangBeginCategory("clang-begin options");
 static cl::opt<bool> Inplace("i", cl::desc("Overwrite edited <file>s."),
                              cl::cat(ClangBeginCategory));
 static cl::opt<bool> PrintLocations(
-    "pl", cl::desc("Print the locations affected by renaming to stderr."),
+    "pl", cl::desc("Print the locations affected to stderr."),
     cl::cat(ClangBeginCategory));
 
 static cl::extrahelp CommonHelp(CommonOptionsParser::HelpMessage);

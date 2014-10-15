@@ -14,7 +14,7 @@
 namespace begin {
 
 class IncludeFinder : public clang::PPCallbacks {
-  const std::string TargetName = "iterator";
+  const std::string TargetSuffix = "/iterator";
   clang::SourceManager& sourceMgr;
 
 public:
@@ -26,12 +26,12 @@ public:
 };
 
 class UseBeginAction : public clang::PluginASTAction {
+  clang::ast_matchers::MatchFinder finder;
   BeginMatchCallback matchCallback;
 
 public:
-  UseBeginAction(clang::tooling::Replacements &replacement, bool printLocations)
-      : matchCallback(replacement, printLocations) {}
-
+  UseBeginAction(clang::tooling::Replacements &replacement,
+                 bool printLocations);
   std::unique_ptr<clang::ASTConsumer>
   CreateASTConsumer(clang::CompilerInstance &ci, llvm::StringRef);
 
