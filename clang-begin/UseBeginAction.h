@@ -14,7 +14,7 @@
 namespace begin {
 
 class UseBeginAction : public clang::PluginASTAction {
-  clang::ast_matchers::MatchFinder finder;
+  clang::ast_matchers::MatchFinder Finder;
   BeginMatchCallback matchCallback;
 
 public:

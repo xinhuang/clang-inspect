@@ -14,12 +14,12 @@ namespace begin {
 UseBeginAction::UseBeginAction(clang::tooling::Replacements &replacement,
                                bool printLocations)
     : matchCallback(replacement, printLocations) {
-    finder.addMatcher(createMemberBeginEndMatcher(), &matchCallback);
+    Finder.addMatcher(createMemberBeginEndMatcher(), &matchCallback);
   }
 
 std::unique_ptr<clang::ASTConsumer>
 UseBeginAction::CreateASTConsumer(clang::CompilerInstance &, llvm::StringRef) {
-  return finder.newASTConsumer();
+  return Finder.newASTConsumer();
 }
 
 bool UseBeginAction::ParseArgs(const clang::CompilerInstance &,
